@@ -1,6 +1,5 @@
 
 .. autosummary::
-   :toctree: _autosummary
    :recursive: 
    :nosignatures:
    

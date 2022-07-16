@@ -22,7 +22,7 @@ Tutorials
 
 Using ValueMaps
 ^^^^^^^^^^^^^^^
-.. todo:: Add tutorial for initilizing :obj:`datamapy.map.ValueMap ` objects
+.. todo:: Add tutorial for initilizing :obj:`datamapy.map.ValueMap` objects
 
 Data Image Manipulation
 ^^^^^^^^^^^^^^^^^^^^^^^
