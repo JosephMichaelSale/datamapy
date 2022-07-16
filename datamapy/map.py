@@ -844,7 +844,7 @@ class ColorValueFormat(Enum):
 		
 		if MAX_PALETTE_WIDTH is not None and divisions*swatch_width > MAX_PALETTE_WIDTH:
 			if verbose: 
-				print('Palette width over maximum.\nReducing divisions from %d to %d'%(divisions,divisions:=MAX_PALETTE_WIDTH//swatch_width),flush=True)
+				print('Palette width over maximum.\nReducing divisions from %d to %d'%(divisions,(divisions:=(MAX_PALETTE_WIDTH//swatch_width))),flush=True)
 			else: divisions = MAX_PALETTE_WIDTH//swatch_width
 			step = int(max_value-min_value)/divisions
 			
@@ -946,12 +946,12 @@ class Monochromatic(ColorValueFormat):
 	
 	def min_color(format):
 		""".. todo::DOC_1"""
-		if (mode:=format.mode())=='RGBA': 
+		if (mode := (format.mode())) == 'RGBA': 
 			return (0,0,0, MONOCHROMATIC_ALPHA_VALUE)
 		return super().min_color()
 	def max_color(format): 
 		""".. todo::DOC_1"""
-		if (mode:=format.mode())=='RGBA': 
+		if (mode := (format.mode())) == 'RGBA': 
 			return (255,255,255, MONOCHROMATIC_ALPHA_VALUE)
 		return super().max_color()
 	def __len__(format): return 255
@@ -982,12 +982,12 @@ class Polychromatic(ColorValueFormat):
 	
 	def min_color(format):
 		""".. todo::DOC_1"""
-		if (mode := format.mode())=='RGB': return (0,0,0)
+		if (mode := (format.mode())) == 'RGB': return (0,0,0)
 		elif mode == 'RGBA':             return (0,0,0,0)
 		else: raise NotImplementedError
 	def max_color(format): 
 		""".. todo::DOC_1"""
-		if (mode := format.mode())=='RGB': return (255,255,255)
+		if (mode := (format.mode())) == 'RGB': return (255,255,255)
 		elif mode == 'RGBA':             return (255,255,255,255)
 		else: raise NotImplementedError
 	def __len__(format): 
@@ -1788,7 +1788,7 @@ def _test_ColorValueFormat(converter_func=False):
 				for j,rB in enumerate(convert_results):
 					if i >= j: continue
 					try:
-						if (fail_info:=compare_conversions(rA[2],rB[2])):
+						if (fail_info := (compare_conversions(rA[2],rB[2]))):
 							index,a,b = fail_info
 							if isinstance(a,Exception): raise a
 							elif isinstance(b,Exception): raise b
@@ -1872,7 +1872,7 @@ def _test_ColorValueFormat(converter_func=False):
 				for j,rB in enumerate(no_alt_convert_results):
 					if i >= j: continue
 					try:
-						if (fail_info:=compare_conversions(rA[2],rB[2])):
+						if (fail_info := (compare_conversions(rA[2],rB[2]))):
 							index,a,b = fail_info
 							if isinstance(a,Exception): raise a
 							elif isinstance(b,Exception): raise b
@@ -1956,7 +1956,7 @@ def _test_ColorValueFormat(converter_func=False):
 				for j,rB in enumerate(alt_convert_results):
 					if i >= j: continue
 					try:
-						if (fail_info:=compare_conversions(rA[2],rB[2])):
+						if (fail_info := (compare_conversions(rA[2],rB[2]))):
 							index,a,b = fail_info
 							if isinstance(a,Exception): raise a
 							elif isinstance(b,Exception): raise b
@@ -2088,11 +2088,11 @@ def _test_CVF(format,t=1,**kwargs):
 		for value in range(kwargs['min_value'],kwargs['max_value']):
 			correct = True
 			val_list,col_list = conversion_test(value,test=False,verbose=False,**kwargs)
-			if color_result := color_differences(col_list,verbose=False):
+			if (color_result := (color_differences(col_list,verbose=False))):
 				if not(value in report_data): report_data[value] = {}
 				report_data[value]['color'] = color_result
 				correct = False
-			if value_result := value_differences(val_list,verbose=False):
+			if (value_result := (value_differences(val_list,verbose=False))):
 				if not(value in report_data): report_data[value] = {}
 				report_data[value]['value'] = value_result
 				for i in value_result:
@@ -2117,7 +2117,7 @@ def _test_CVF(format,t=1,**kwargs):
 				critical_primary_value_conversion_failures = 0
 				for value in report_data:
 					prt = ''
-					if color_result := report_data[value].get('color',False):
+					if (color_result := (report_data[value].get('color',False))):
 						if len(color_result) > 1 or not(0 in color_result):
 							if len(prt) == 0: color_prt ='\t\t\t%d:\n'%value
 							else: color_prt=''
@@ -2129,7 +2129,7 @@ def _test_CVF(format,t=1,**kwargs):
 							prt+=color_prt
 						else:
 							total_primary_color_conversion_failures += len(color_result)
-					if value_result := report_data[value].get('value',False):
+					if (value_result := (report_data[value].get('value',False))):
 						if len(value_result) > 1 or not(0 in value_result):
 							if len(prt) == 0: value_prt ='\t\t\t%d:\n'%value
 							else: value_prt=''

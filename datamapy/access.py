@@ -112,9 +112,9 @@ class RegionAccessFormat(AccessFormat):
 	RANDOM = ('RANDOM','RANDOM')
 	def region(format, point, dimension, block_dimension=None):
 		""".. todo::DOC_1"""
-		if (mode := format.mode()) == 'LINEAR':
+		if (mode := (format.mode())) == 'LINEAR':
 			if block_dimension is not None:
-				if (orientation := format.orientation()) == 'HORIZONTAL':
+				if (orientation := (format.orientation())) == 'HORIZONTAL':
 					region_dimension = tuple(bd if d!=0 else dimension[d] for d,bd in enumerate(block_dimension))
 				elif orientation == 'VERTICAL':
 					region_dimension = tuple(bd if d!=1 else dimension[d] for d,bd in enumerate(block_dimension))
@@ -128,13 +128,13 @@ class RegionAccessFormat(AccessFormat):
 		else:                  raise NotImplementedError
 	def access_iterator(format, dimension, block_dimension=None):
 		""".. todo::DOC_1"""
-		if (orientation:=format.orientation()) == 'HORIZONTAL':
+		if (orientation := (format.orientation())) == 'HORIZONTAL':
 			reorder = [ i for i in reversed(range(len(dimension)))]
 		elif orientation == 'VERTICAL':
 			reorder = None
 		else: raise NotImplementedError
 			
-		if (mode:=format.mode()) == 'LINEAR': 
+		if (mode := (format.mode())) == 'LINEAR': 
 			yield from multirange(dimension,reorder=reorder)
 		elif mode == 'BLOCK': 
 			if block_dimension is None: raise ValueError('block_dimension must be provided to use BLOCK AccessFormat mode')
@@ -234,7 +234,7 @@ class StaticAccessManager(AccessManager):
 		point_block = manager._point_block(point,point_info)
 		
 		# Data returned if it is already loaded 
-		if (point_data := manager.has_point(point,**point_info)): return point_data
+		if (point_data := (manager.has_point(point,**point_info))): return point_data
 		
 		manager.access_regions.setdefault(point_region,{})[point_block] = manager.fetch(point_block)
 		
