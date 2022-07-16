@@ -2,8 +2,8 @@
 
 This module contains tools which allow for easy interaction with data
 encoded in the pixel values of image files. This includes grayscale
-heat maps (Monochromatic) as well as higher resolution multi-channel 
-(Polychromatic) data encoding formats.
+heat maps (:obj:`Monochromatic`) as well as higher resolution multi-channel 
+(:obj:`Polychromatic`) data encoding formats.
 """
 
 
@@ -20,36 +20,36 @@ from access import RegionAccessFormat,StaticAccessManager,DynamicAccessManager,R
 
 
 MAX_PALETTE_WIDTH = 2**16
-"""int: Maximum image width allowed when generating palettes for 
-	ColorValueFormat(s)
+""":obj:`int`: Maximum image width allowed when generating palettes for 
+:obj:`ColorValueFormat`
 
-When set to an int value all calls to ColorValueFormat.palette will
-check for total width prior to image generation and redefine generation
-parameters so the width falls within this limit. 
+When set to an :obj:`int` value all calls to :obj:`ColorValueFormat.palette`
+will check for total width prior to image generation and redefine
+generation parameters so the width falls within this limit. 
 
 When set to None this redefinition process is skipped entirely.
 """
 
 MONOCHROME_VERIFY_CHANNELS = False
-"""bool: Flag that enables the checking for matching channel values
-	on each Monochromatic color to value conversion
+""":obj:`bool`: Flag that enables the checking for matching channel values
+	on each :obj:`Monochromatic` color to value conversion
 """
 
 MONOCHROMATIC_ALPHA_VALUE=255
-"""int: Alpha channel value used in monochromatic color formats"""
+""":obj:`int`: Alpha channel value used in :obj:`Monochromatic` color formats"""
 
 POLYCHROME_DEFAULT_STRIPE_WIDTH = 8
-"""int: Width value for stripe for the default color types formats of
-	the Polychrome Class. (Polychrome.RGB and Polychrome.RGBA)
+""":obj:`int`: Width value of stripe for the default color types formats of
+:obj:`Polychrome`. (:obj:`Polychrome.RGB` and :obj:`Polychrome.RGBA`)
 
 Value must be a power of 2 to avoid incompatibility with either RGB
 or RGBA format types.
 	
-Changing value after Polychrome class has already been defined will
+Changing value after :obj:`Polychrome` has already been defined will
 have no effect on default format stripe width.  
 """
 
-REORDER_RGB = {
+_REORDER_RGB = {
 	'RGB': None,
 	'RBG': ReversibleReorder([0, 2, 1], 3),
 	'GRB': ReversibleReorder([1, 0, 2], 3),
@@ -57,14 +57,14 @@ REORDER_RGB = {
 	'BRG': ReversibleReorder([2, 0, 1], 3),
 	'BGR': ReversibleReorder([2, 1, 0], 3),
 }
-"""dict: Dictionary of ReversibleReorder objects for every possible
-	type of channel reordering for the RGB format type.
+""":obj:`dict`: Dictionary of :obj:`ReversibleReorder` objects for
+every possible type of channel reordering for the RGB format type.
 
-Used by the Polychrome ColorValueFormat to generate the different
-reordered formats for RGB type formats
+Used by :obj:`Polychrome` to generate the different reordered formats
+for RGB type formats.
 """
 
-REORDER_RGBA = {
+_REORDER_RGBA = {
 	'RGBA': None,
 	'RGAB': ReversibleReorder([0, 1, 3, 2], 4),
 	'RBGA': ReversibleReorder([0, 2, 1, 3], 4),
@@ -90,22 +90,21 @@ REORDER_RGBA = {
 	'ABRG': ReversibleReorder([3, 2, 0, 1], 4),
 	'ABGR': ReversibleReorder([3, 2, 1, 0], 4),
 }
-"""dict: Dictionary of ReversibleReorder objects for every possible
-	type of channel reordering for the RGBA format type.
+""":obj:`dict`: Dictionary of :obj:`ReversibleReorder` objects for
+every possible type of channel reordering for the RGBA format type.
 	
-Used by the Polychrome ColorValueFormat to generate the different
-reordered formats for RGBA type formats
+Used by :obj:`Polychrome` to generate the different reordered formats
+for RGBA type formats.
 """
 
-DEBUG_VERBOSE = True
-"""bool: Flag that enable verbose debug printing in certain functions"""
+_DEBUG_VERBOSE = True
+""":obj:`bool`: Flag that enable verbose debug printing in certain functions"""
 
-DEBUG_DATA_IMAGE_FOLDER = '..\example_data_images'
-"""str: path to folder containing appropriatly formated
-	data image files for use in unit tests. 
+_DEBUG_DATA_IMAGE_FOLDER = '..\example_data_images'
+""":obj:`str`: Path to folder containing appropriatly formated
+data image files for use in unit tests. 
 	
-Only used when module is run as __main__. Value is not
-important outside of this context.
+Only used when module is run as __main__.
 """
 
 
@@ -176,7 +175,7 @@ def _calc_coverage(ranges):
 
 ''' map_unwrap helpers '''
 def pivots(line, key=lambda x,y: x==y, front=True, back=True, rtn_type=list):
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	n = len(line)
 	
 	if front: # Find pivots from front
@@ -206,8 +205,9 @@ def pivots(line, key=lambda x,y: x==y, front=True, back=True, rtn_type=list):
 		return pivots
 	else: # Attempt to convert pivots to type
 		return rtn_type(pivots)
+
 def all_loops(line,key=lambda x,y: x==y,check_indexes=None):
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	n = len(line)
 	
 	if check_indexes is not None: 
@@ -251,8 +251,9 @@ def all_loops(line,key=lambda x,y: x==y,check_indexes=None):
 				looped=True
 	
 	return tuple(loop_points)
-class MapUnwrapper:
-	"""TODO DOC: 0"""
+
+class _MapUnwrapper:
+	""".. todo::DOC_0"""
 	def __init__(unwrapper, image=None, filepath=None, data_format=None):
 		if image is not None:
 			unwrapper.wrapped_img = image
@@ -338,13 +339,13 @@ class MapUnwrapper:
 
 '''Public Utility Functions'''
 def map_value_coverage(*maps): 
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	return _calc_coverage([(map.min_value,map.max_value) for map in maps])
 	
 def map_unwrap(image=None,filepath=None,row=True,col=True, shift=(0,0), sampling=1,verify=True,verbose=True):
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	
-	muw = MapUnwrapper(image=image, filepath=filepath)
+	muw = _MapUnwrapper(image=image, filepath=filepath)
 	
 	def color_key(a,b):
 		if len(a) == len(b):
@@ -492,7 +493,7 @@ def map_unwrap(image=None,filepath=None,row=True,col=True, shift=(0,0), sampling
 	return muw.wrapped_img.crop((*shift,crop_width+shift[0],crop_height+shift[1]))
 
 def map_unsplit(splits=None,**kwargs):
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	width = kwargs['width'] if 'width' in kwargs else 1
 	height = kwargs['height'] if 'height' in kwargs else 1
 	
@@ -538,7 +539,7 @@ def map_unsplit(splits=None,**kwargs):
 		return generator
 
 def map_stitch(map, *stitch_components, data_format=None):
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	
 	if map is not None: stitch_components = map,*stitch_components
 	
@@ -709,9 +710,11 @@ def map_stitch(map, *stitch_components, data_format=None):
 
 '''Color Value Format Classes'''
 class ColorValueFormat(Enum):
-	"""TODO DOC: 0"""
+	"""Abstract Color-Value encoding format template"""
+	
+	""".. todo::DOC_0"""
 	def __call__(format,arg,**kwargs):
-		"""TODO DOC: 2"""
+		""".. todo::DOC_2"""
 		if isinstance(arg,(list,tuple)) and (len(arg) == 3 or len(arg) == 4):
 			return format.get_value(arg,**kwargs)
 		else:
@@ -724,13 +727,14 @@ class ColorValueFormat(Enum):
 	def converter(original_format, other_format=None, original_kwargs={}, other_kwargs={}, **kwargs):
 		'''	Provides conversion function with preset parameters 
 				Allows for passing of formats without dealing with range arguments
+			
 			Args:
 				original_format (ColorValueFormat): Format used to convert input values
-				other_format (:obj:'ColorValueFormat', optional): Format used to convert result of original conversion. 
+				other_format (:obj:`ColorValueFormat`, optional): Format used to convert result of original conversion. 
 					Defaults to None.
-				original_kwargs (:obj:'dict', optional): Keyword arguments used exclusively with calls to 'original_format.
+				original_kwargs (:obj:`dict`, optional): Keyword arguments used exclusively with calls to *original_format*.
 					Defaults to None.
-				original_kwargs (:obj:'dict', optional): Keyword arguments used exclusively with calls to 'other_format'.
+				original_kwargs (:obj:`dict`, optional): Keyword arguments used exclusively with calls to *other_format*.
 					Defaults to None.
 				**kwargs: Keywords given to format(s) for every conversion.
 					Common keywords include 'min_value' and 'max_value', but other keywords 
@@ -739,9 +743,9 @@ class ColorValueFormat(Enum):
 				function: A conversion function which takes similar arguments to calls to the format(s), but
 				with the preset keywords included.
 				
-				Providing the optional 'other_format' argument returns a direct format to format conversion.
+				Providing the optional *other_format* argument returns a direct format to format conversion.
 				
-				Providing either of the optional 'original_kwargs' or 'other_kwargs' applies the contained 
+				Providing either of the optional *original_kwargs* or *other_kwargs* applies the contained 
 				keywords exclusively to their respective call functions. 
 		''' 
 		def single_converter(*args,**kws):
@@ -805,27 +809,27 @@ class ColorValueFormat(Enum):
 			
 			
 		Args:
-			min_value (float): Minimum value in the palettes range.
-			max_value (float): Maximum value in the palettes range.
-			step (:obj:'int', optional): Value increase between each color swatch in the palette.
+			min_value (:obj:`float`): Minimum value in the palettes range.
+			max_value (:obj:`float`): Maximum value in the palettes range.
+			step (:obj:`int`, optional): Value increase between each color swatch in the palette.
 				Defaults to None.
-			swatch_width (:obj:'int', optional): Pixel width of each color swatch.
+			swatch_width (:obj:`int`, optional): Pixel width of each color swatch.
 				Defaults to 1.
-			swatch_height (:obj:'int', optional): Pixel height of each color swatch. 
+			swatch_height (:obj:`int`, optional): Pixel height of each color swatch. 
 				Defaults to 128.
-			full (:obj:'bool', optional): Override for step argument. Sets step to the highest value
+			full (:obj:`bool`, optional): Override for step argument. Sets step to the highest value
 				that displays every possible color in range. Not recommended for larger scaled formats.
 				Defaults to False.
-			verbose (:obj:'bool', optional): Enables process information to be printed to the terminal.
+			verbose (:obj:`bool`, optional): Enables process information to be printed to the terminal.
 				Defaults to False.
 		
 		Returns:
 			PIL.Image: Image containing the colors associated with equally spaced values in formats palette range.
 			
-			Dimentions of full palette image equals 'divisions'*swatch_width x swatch_height. 
+			Dimentions of full palette image equals 'divisions'\\*swatch_width x swatch_height. 
 			With 'divisions' defined by the number of steps to get from 'min_value' to 'max_value'.
 			
-			If MAX_PALETTE_WIDTH is not None the palette will be divided as to be at max that many pixels wide.
+			If :obj:`MAX_PALETTE_WIDTH` is not None the palette will be divided as to be at max that many pixels wide.
 		'''
 		if full: 
 			step = format.get_scale(min_value=min_value,max_value=max_value)
@@ -854,27 +858,27 @@ class ColorValueFormat(Enum):
 		'''Generates a single image containing the palettes of each ColorValueFormat object given.
 		
 		Args:
-			formats (:obj:'iter' of :obj:'ColorValueFormat'): Some sequence of formats for a 
+			formats (:obj:`iter` of :obj:`ColorValueFormat`): Some sequence of formats for a 
 				ColorValueFormat subclass. Can also be the subclass of ColorValueFormat itself 
 				to get all of its formats contained formats' palettes. 
-			min_value (float): Minimum value in the palettes range.
-			max_value (float): Maximum value in the palettes range.
-			step (:obj:'int', optional): Value increase between each color swatch in the palette.
+			min_value (:obj:`float`): Minimum value in the palettes range.
+			max_value (:obj:`float`): Maximum value in the palettes range.
+			step (:obj:`int`, optional): Value increase between each color swatch in the palette.
 				Defaults to None.
-			swatch_width (:obj:'int', optional): Pixel width of each color swatch.
+			swatch_width (:obj:`int`, optional): Pixel width of each color swatch.
 				Defaults to 1.
-			swatch_height (:obj:'int', optional): Pixel height of each color swatch. 
+			swatch_height (:obj:`int`, optional): Pixel height of each color swatch. 
 				Defaults to 64.
-			full (:obj:'bool', optional): Override for step argument. Sets step to the highest value
+			full (:obj:`bool`, optional): Override for step argument. Sets step to the highest value
 				that displays every possible color in range. Not recommended for larger scaled formats.
 				Defaults to False.
-			verbose (:obj:'bool', optional): Enables process information to be printed to the terminal.
+			verbose (:obj:`bool`, optional): Enables process information to be printed to the terminal.
 				Defaults to False.
 		
 		Returns:
 			PIL.Image: Image containing the palettes of every format in formats. 
 			
-			Dimentions of full image equals 'divisions'*swatch_width x swatch_height*len(formats). 
+			Dimentions of full image equals 'divisions'\\*swatch_width x swatch_height\\*len(formats). 
 			With 'divisions' defined by the number of steps to get from 'min_value' to 'max_value'.
 			
 			See palette function definition for more information about individual format palettes.
@@ -887,46 +891,46 @@ class ColorValueFormat(Enum):
 		return map_unsplit({0:palettes})	
 	
 	def getbands(format):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return tuple(format.mode())
 	def value_as_bands(value,n,band_width):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if value > 2**(n*band_width) or value < 0:
 			raise ValueError("Value not able to be represented in %d %d-wide value bands"%(n,band_width))
 		band_mask = (2**band_width)-1
 		return tuple(((value>>(band_width*((n-1)-i)))&band_mask) for i in range(n))	
 	
 	def max_value(format,min_value,max_value): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return format.get_value( format.max_color(), min_value=min_value, max_value=max_value)
 	def min_value(format,min_value,max_value):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return format.get_value( format.min_color(), min_value=min_value, max_value=max_value)
 	def max_color(format):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return tuple( 255 for _ in range(format._band_count()))
 	def min_color(format):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return tuple(  0 for _ in range(format._band_count()))
 	def min(format,arg,**kwargs): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return ((isinstance(arg,(list,tuple)) 
 			and (len(arg) == 3 or len(arg) == 4) 
 			and format.min_value(**kwargs) == format(arg,**kwargs)) 
 			or (arg == format.min_value(**kwargs)))
 	def max(format,arg,**kwargs): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return ((isinstance(arg,(list,tuple)) 
 			and (len(arg) == 3 or len(arg) == 4) 
 			and format.max_value(**kwargs) == format(arg,**kwargs))
 			or (arg == format.max_value(**kwargs)))
 	def mode(format):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if format.name.startswith('RGBA'):  return 'RGBA'
 		elif format.name.startswith('RGB'): return 'RGB'
 		else: raise NotImplementedError
 	def get_scale(format,min_value,max_value):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return (max_value - min_value)/len(format)
 		
 	#Functions to implement in each subclass
@@ -935,227 +939,230 @@ class ColorValueFormat(Enum):
 	def __len__(format):                  raise NotImplementedError
 
 class Monochromatic(ColorValueFormat):
+	"""Abstract Monochromatic Color-Value encoding format template"""
 	def _scale_value_up(value, min_value, max_value, cap=255):   return ColorValueFormat._scale_value_up( value, min_value, max_value, 255)
 	def _scale_value_down(value, min_value, max_value, cap=255): return ColorValueFormat._scale_value_down( value, min_value, max_value, 255)
 	def _is_monochrome(*bands): return False if len(tuple( (bands[i-1],b) for i,b in enumerate(bands) if i > 0 and b!=bands[i-1])) else True
 	
 	def min_color(format):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if (mode:=format.mode())=='RGBA': 
 			return (0,0,0, MONOCHROMATIC_ALPHA_VALUE)
 		return super().min_color()
 	def max_color(format): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if (mode:=format.mode())=='RGBA': 
 			return (255,255,255, MONOCHROMATIC_ALPHA_VALUE)
 		return super().max_color()
 	def __len__(format): return 255
 
 class Monochrome(Monochromatic):
+	"""Monochromatic Color-Value encoding format enumeration"""
 	RGB=0
 	RGBA=1
 	def get_value(format, color, min_value, max_value):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if MONOCHROME_VERIFY_CHANNELS and  not(Monochrome._is_monochrome(*color)):
 			raise ValueError('Attempted to convert non-monochrome color %s using %s ColorValueFormat.'%(color,format),'Set MONOCHROME_VERIFY_CHANNELS equal to False to ignore check')
 		return int(Monochrome._scale_value_down(color[0],min_value,max_value))
 	
 	def get_color(format, value, min_value, max_value):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		band_value = int(Monochrome._scale_value_up(value,min_value,max_value))
 		return tuple( band_value if i < 3 else 255 for i in range(format._band_count()))
 
 class Polychromatic(ColorValueFormat):
+	"""Abstract Polychromatic Color-Value encoding format template"""
 	def _get_reorder_function(format): return None
 	def reorder_color(format,color,reverse=False):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if format._get_reorder_function() is None: return color
 		
 		return format._get_reorder_function()(color,reverse=reverse)
 	
 	def min_color(format):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if (mode := format.mode())=='RGB': return (0,0,0)
 		elif mode == 'RGBA':             return (0,0,0,0)
 		else: raise NotImplementedError
 	def max_color(format): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if (mode := format.mode())=='RGB': return (255,255,255)
 		elif mode == 'RGBA':             return (255,255,255,255)
 		else: raise NotImplementedError
 	def __len__(format): 
-		"""TODO DOC: 2"""
+		""".. todo::DOC_2"""
 		return (2**(8*format._band_count()))-1
 	
 class Polychrome(Polychromatic):
-	"""TODO DOC: 0"""
+	"""Polychromatic Color-Value encoding format enumeration"""
 	# 'RGB' type formats
 	#  'RGB' alias formats
-	RGB_s1 = (24, REORDER_RGB['RGB'])
-	RGB_s2 = (12, REORDER_RGB['RGB'])
-	RGB_s4 = ( 6, REORDER_RGB['RGB'])
-	RGB_s8 = ( 3, REORDER_RGB['RGB'])
-	RGB = (24//POLYCHROME_DEFAULT_STRIPE_WIDTH, REORDER_RGB['RGB'])
+	RGB_s1 = (24, _REORDER_RGB['RGB'])
+	RGB_s2 = (12, _REORDER_RGB['RGB'])
+	RGB_s4 = ( 6, _REORDER_RGB['RGB'])
+	RGB_s8 = ( 3, _REORDER_RGB['RGB'])
+	RGB = (24//POLYCHROME_DEFAULT_STRIPE_WIDTH, _REORDER_RGB['RGB'])
 	
 	# 'RGB' enum member formats
-	RGB_RGB_s1 = (24, REORDER_RGB['RGB'])
-	RGB_RGB_s2 = (12, REORDER_RGB['RGB'])
-	RGB_RGB_s4 = ( 6, REORDER_RGB['RGB'])
-	RGB_RGB_s8 = ( 3, REORDER_RGB['RGB'])
+	RGB_RGB_s1 = (24, _REORDER_RGB['RGB'])
+	RGB_RGB_s2 = (12, _REORDER_RGB['RGB'])
+	RGB_RGB_s4 = ( 6, _REORDER_RGB['RGB'])
+	RGB_RGB_s8 = ( 3, _REORDER_RGB['RGB'])
 	
-	RGB_RBG_s1 = (24, REORDER_RGB['RBG'])
-	RGB_RBG_s2 = (12, REORDER_RGB['RBG'])
-	RGB_RBG_s4 = ( 6, REORDER_RGB['RBG'])
-	RGB_RBG_s8 = ( 3, REORDER_RGB['RBG'])
+	RGB_RBG_s1 = (24, _REORDER_RGB['RBG'])
+	RGB_RBG_s2 = (12, _REORDER_RGB['RBG'])
+	RGB_RBG_s4 = ( 6, _REORDER_RGB['RBG'])
+	RGB_RBG_s8 = ( 3, _REORDER_RGB['RBG'])
 	
-	RGB_GRB_s1 = (24, REORDER_RGB['GRB'])
-	RGB_GRB_s2 = (12, REORDER_RGB['GRB'])
-	RGB_GRB_s4 = ( 6, REORDER_RGB['GRB'])
-	RGB_GRB_s8 = ( 3, REORDER_RGB['GRB'])
+	RGB_GRB_s1 = (24, _REORDER_RGB['GRB'])
+	RGB_GRB_s2 = (12, _REORDER_RGB['GRB'])
+	RGB_GRB_s4 = ( 6, _REORDER_RGB['GRB'])
+	RGB_GRB_s8 = ( 3, _REORDER_RGB['GRB'])
 	
-	RGB_GBR_s1 = (24, REORDER_RGB['GBR'])
-	RGB_GBR_s2 = (12, REORDER_RGB['GBR'])
-	RGB_GBR_s4 = ( 6, REORDER_RGB['GBR'])
-	RGB_GBR_s8 = ( 3, REORDER_RGB['GBR'])
+	RGB_GBR_s1 = (24, _REORDER_RGB['GBR'])
+	RGB_GBR_s2 = (12, _REORDER_RGB['GBR'])
+	RGB_GBR_s4 = ( 6, _REORDER_RGB['GBR'])
+	RGB_GBR_s8 = ( 3, _REORDER_RGB['GBR'])
 	
-	RGB_BRG_s1 = (24, REORDER_RGB['BRG'])
-	RGB_BRG_s2 = (12, REORDER_RGB['BRG'])
-	RGB_BRG_s4 = ( 6, REORDER_RGB['BRG'])
-	RGB_BRG_s8 = ( 3, REORDER_RGB['BRG'])
+	RGB_BRG_s1 = (24, _REORDER_RGB['BRG'])
+	RGB_BRG_s2 = (12, _REORDER_RGB['BRG'])
+	RGB_BRG_s4 = ( 6, _REORDER_RGB['BRG'])
+	RGB_BRG_s8 = ( 3, _REORDER_RGB['BRG'])
 	
-	RGB_BGR_s1 = (24, REORDER_RGB['BGR'])
-	RGB_BGR_s2 = (12, REORDER_RGB['BGR'])
-	RGB_BGR_s4 = ( 6, REORDER_RGB['BGR'])
-	RGB_BGR_s8 = ( 3, REORDER_RGB['BGR'])
+	RGB_BGR_s1 = (24, _REORDER_RGB['BGR'])
+	RGB_BGR_s2 = (12, _REORDER_RGB['BGR'])
+	RGB_BGR_s4 = ( 6, _REORDER_RGB['BGR'])
+	RGB_BGR_s8 = ( 3, _REORDER_RGB['BGR'])
 	
 	# 'RGBA' type formats
 	#  'RGBA' alias formats
-	RGBA_S1 = (32, REORDER_RGBA['RGBA'])
-	RGBA_S2 = (16, REORDER_RGBA['RGBA'])
-	RGBA_S4 = ( 8, REORDER_RGBA['RGBA'])
-	RGBA_S8 = ( 4, REORDER_RGBA['RGBA'])
-	RGBA = (32//POLYCHROME_DEFAULT_STRIPE_WIDTH, REORDER_RGBA['RGBA'])
+	RGBA_S1 = (32, _REORDER_RGBA['RGBA'])
+	RGBA_S2 = (16, _REORDER_RGBA['RGBA'])
+	RGBA_S4 = ( 8, _REORDER_RGBA['RGBA'])
+	RGBA_S8 = ( 4, _REORDER_RGBA['RGBA'])
+	RGBA = (32//POLYCHROME_DEFAULT_STRIPE_WIDTH, _REORDER_RGBA['RGBA'])
 	
 	# 'RGBA' enum member formats
-	RGBA_RGBA_s1 = (32, REORDER_RGBA['RGBA'])
-	RGBA_RGBA_s2 = (16, REORDER_RGBA['RGBA'])
-	RGBA_RGBA_s4 = ( 8, REORDER_RGBA['RGBA'])
-	RGBA_RGBA_s8 = ( 4, REORDER_RGBA['RGBA'])
+	RGBA_RGBA_s1 = (32, _REORDER_RGBA['RGBA'])
+	RGBA_RGBA_s2 = (16, _REORDER_RGBA['RGBA'])
+	RGBA_RGBA_s4 = ( 8, _REORDER_RGBA['RGBA'])
+	RGBA_RGBA_s8 = ( 4, _REORDER_RGBA['RGBA'])
 	
-	RGBA_RGAB_s1 = (32, REORDER_RGBA['RGAB'])
-	RGBA_RGAB_s2 = (16, REORDER_RGBA['RGAB'])
-	RGBA_RGAB_s4 = ( 8, REORDER_RGBA['RGAB'])
-	RGBA_RGAB_s8 = ( 4, REORDER_RGBA['RGAB'])
+	RGBA_RGAB_s1 = (32, _REORDER_RGBA['RGAB'])
+	RGBA_RGAB_s2 = (16, _REORDER_RGBA['RGAB'])
+	RGBA_RGAB_s4 = ( 8, _REORDER_RGBA['RGAB'])
+	RGBA_RGAB_s8 = ( 4, _REORDER_RGBA['RGAB'])
 	
-	RGBA_RBGA_s1 = (32, REORDER_RGBA['RBGA'])
-	RGBA_RBGA_s2 = (16, REORDER_RGBA['RBGA'])
-	RGBA_RBGA_s4 = ( 8, REORDER_RGBA['RBGA'])
-	RGBA_RBGA_s8 = ( 4, REORDER_RGBA['RBGA'])
+	RGBA_RBGA_s1 = (32, _REORDER_RGBA['RBGA'])
+	RGBA_RBGA_s2 = (16, _REORDER_RGBA['RBGA'])
+	RGBA_RBGA_s4 = ( 8, _REORDER_RGBA['RBGA'])
+	RGBA_RBGA_s8 = ( 4, _REORDER_RGBA['RBGA'])
 	
-	RGBA_RBAG_s1 = (32, REORDER_RGBA['RBAG'])
-	RGBA_RBAG_s2 = (16, REORDER_RGBA['RBAG'])
-	RGBA_RBAG_s4 = ( 8, REORDER_RGBA['RBAG'])
-	RGBA_RBAG_s8 = ( 4, REORDER_RGBA['RBAG'])
+	RGBA_RBAG_s1 = (32, _REORDER_RGBA['RBAG'])
+	RGBA_RBAG_s2 = (16, _REORDER_RGBA['RBAG'])
+	RGBA_RBAG_s4 = ( 8, _REORDER_RGBA['RBAG'])
+	RGBA_RBAG_s8 = ( 4, _REORDER_RGBA['RBAG'])
 	
-	RGBA_RAGB_s1 = (32, REORDER_RGBA['RAGB'])
-	RGBA_RAGB_s2 = (16, REORDER_RGBA['RAGB'])
-	RGBA_RAGB_s4 = ( 8, REORDER_RGBA['RAGB'])
-	RGBA_RAGB_s8 = ( 4, REORDER_RGBA['RAGB'])
+	RGBA_RAGB_s1 = (32, _REORDER_RGBA['RAGB'])
+	RGBA_RAGB_s2 = (16, _REORDER_RGBA['RAGB'])
+	RGBA_RAGB_s4 = ( 8, _REORDER_RGBA['RAGB'])
+	RGBA_RAGB_s8 = ( 4, _REORDER_RGBA['RAGB'])
 	
-	RGBA_RABG_s1 = (32, REORDER_RGBA['RABG'])
-	RGBA_RABG_s2 = (16, REORDER_RGBA['RABG'])
-	RGBA_RABG_s4 = ( 8, REORDER_RGBA['RABG'])
-	RGBA_RABG_s8 = ( 4, REORDER_RGBA['RABG'])
+	RGBA_RABG_s1 = (32, _REORDER_RGBA['RABG'])
+	RGBA_RABG_s2 = (16, _REORDER_RGBA['RABG'])
+	RGBA_RABG_s4 = ( 8, _REORDER_RGBA['RABG'])
+	RGBA_RABG_s8 = ( 4, _REORDER_RGBA['RABG'])
 	
-	RGBA_GRBA_s1 = (32, REORDER_RGBA['GRBA'])
-	RGBA_GRBA_s2 = (16, REORDER_RGBA['GRBA'])
-	RGBA_GRBA_s4 = ( 8, REORDER_RGBA['GRBA'])
-	RGBA_GRBA_s8 = ( 4, REORDER_RGBA['GRBA'])
+	RGBA_GRBA_s1 = (32, _REORDER_RGBA['GRBA'])
+	RGBA_GRBA_s2 = (16, _REORDER_RGBA['GRBA'])
+	RGBA_GRBA_s4 = ( 8, _REORDER_RGBA['GRBA'])
+	RGBA_GRBA_s8 = ( 4, _REORDER_RGBA['GRBA'])
 	
-	RGBA_GRAB_s1 = (32, REORDER_RGBA['GRAB'])
-	RGBA_GRAB_s2 = (16, REORDER_RGBA['GRAB'])
-	RGBA_GRAB_s4 = ( 8, REORDER_RGBA['GRAB'])
-	RGBA_GRAB_s8 = ( 4, REORDER_RGBA['GRAB'])
+	RGBA_GRAB_s1 = (32, _REORDER_RGBA['GRAB'])
+	RGBA_GRAB_s2 = (16, _REORDER_RGBA['GRAB'])
+	RGBA_GRAB_s4 = ( 8, _REORDER_RGBA['GRAB'])
+	RGBA_GRAB_s8 = ( 4, _REORDER_RGBA['GRAB'])
 	
-	RGBA_GBRA_s1 = (32, REORDER_RGBA['GBRA'])
-	RGBA_GBRA_s2 = (16, REORDER_RGBA['GBRA'])
-	RGBA_GBRA_s4 = ( 8, REORDER_RGBA['GBRA'])
-	RGBA_GBRA_s8 = ( 4, REORDER_RGBA['GBRA'])
+	RGBA_GBRA_s1 = (32, _REORDER_RGBA['GBRA'])
+	RGBA_GBRA_s2 = (16, _REORDER_RGBA['GBRA'])
+	RGBA_GBRA_s4 = ( 8, _REORDER_RGBA['GBRA'])
+	RGBA_GBRA_s8 = ( 4, _REORDER_RGBA['GBRA'])
 	
-	RGBA_GBAR_s1 = (32, REORDER_RGBA['GBAR'])
-	RGBA_GBAR_s2 = (16, REORDER_RGBA['GBAR'])
-	RGBA_GBAR_s4 = ( 8, REORDER_RGBA['GBAR'])
-	RGBA_GBAR_s8 = ( 4, REORDER_RGBA['GBAR'])
+	RGBA_GBAR_s1 = (32, _REORDER_RGBA['GBAR'])
+	RGBA_GBAR_s2 = (16, _REORDER_RGBA['GBAR'])
+	RGBA_GBAR_s4 = ( 8, _REORDER_RGBA['GBAR'])
+	RGBA_GBAR_s8 = ( 4, _REORDER_RGBA['GBAR'])
 	
-	RGBA_GARB_s1 = (32, REORDER_RGBA['GARB'])
-	RGBA_GARB_s2 = (16, REORDER_RGBA['GARB'])
-	RGBA_GARB_s4 = ( 8, REORDER_RGBA['GARB'])
-	RGBA_GARB_s8 = ( 4, REORDER_RGBA['GARB'])
+	RGBA_GARB_s1 = (32, _REORDER_RGBA['GARB'])
+	RGBA_GARB_s2 = (16, _REORDER_RGBA['GARB'])
+	RGBA_GARB_s4 = ( 8, _REORDER_RGBA['GARB'])
+	RGBA_GARB_s8 = ( 4, _REORDER_RGBA['GARB'])
 	
-	RGBA_GABR_s1 = (32, REORDER_RGBA['GABR'])
-	RGBA_GABR_s2 = (16, REORDER_RGBA['GABR'])
-	RGBA_GABR_s4 = ( 8, REORDER_RGBA['GABR'])
-	RGBA_GABR_s8 = ( 4, REORDER_RGBA['GABR'])
+	RGBA_GABR_s1 = (32, _REORDER_RGBA['GABR'])
+	RGBA_GABR_s2 = (16, _REORDER_RGBA['GABR'])
+	RGBA_GABR_s4 = ( 8, _REORDER_RGBA['GABR'])
+	RGBA_GABR_s8 = ( 4, _REORDER_RGBA['GABR'])
 	
-	RGBA_BRGA_s1 = (32, REORDER_RGBA['BRGA'])
-	RGBA_BRGA_s2 = (16, REORDER_RGBA['BRGA'])
-	RGBA_BRGA_s4 = ( 8, REORDER_RGBA['BRGA'])
-	RGBA_BRGA_s8 = ( 4, REORDER_RGBA['BRGA'])
+	RGBA_BRGA_s1 = (32, _REORDER_RGBA['BRGA'])
+	RGBA_BRGA_s2 = (16, _REORDER_RGBA['BRGA'])
+	RGBA_BRGA_s4 = ( 8, _REORDER_RGBA['BRGA'])
+	RGBA_BRGA_s8 = ( 4, _REORDER_RGBA['BRGA'])
 	
-	RGBA_BRAG_s1 = (32, REORDER_RGBA['BRAG'])
-	RGBA_BRAG_s2 = (16, REORDER_RGBA['BRAG'])
-	RGBA_BRAG_s4 = ( 8, REORDER_RGBA['BRAG'])
-	RGBA_BRAG_s8 = ( 4, REORDER_RGBA['BRAG'])
+	RGBA_BRAG_s1 = (32, _REORDER_RGBA['BRAG'])
+	RGBA_BRAG_s2 = (16, _REORDER_RGBA['BRAG'])
+	RGBA_BRAG_s4 = ( 8, _REORDER_RGBA['BRAG'])
+	RGBA_BRAG_s8 = ( 4, _REORDER_RGBA['BRAG'])
 	
-	RGBA_BGRA_s1 = (32, REORDER_RGBA['BGRA'])
-	RGBA_BGRA_s2 = (16, REORDER_RGBA['BGRA'])
-	RGBA_BGRA_s4 = ( 8, REORDER_RGBA['BGRA'])
-	RGBA_BGRA_s8 = ( 4, REORDER_RGBA['BGRA'])
+	RGBA_BGRA_s1 = (32, _REORDER_RGBA['BGRA'])
+	RGBA_BGRA_s2 = (16, _REORDER_RGBA['BGRA'])
+	RGBA_BGRA_s4 = ( 8, _REORDER_RGBA['BGRA'])
+	RGBA_BGRA_s8 = ( 4, _REORDER_RGBA['BGRA'])
 	
-	RGBA_BGAR_s1 = (32, REORDER_RGBA['BGAR'])
-	RGBA_BGAR_s2 = (16, REORDER_RGBA['BGAR'])
-	RGBA_BGAR_s4 = ( 8, REORDER_RGBA['BGAR'])
-	RGBA_BGAR_s8 = ( 4, REORDER_RGBA['BGAR'])
+	RGBA_BGAR_s1 = (32, _REORDER_RGBA['BGAR'])
+	RGBA_BGAR_s2 = (16, _REORDER_RGBA['BGAR'])
+	RGBA_BGAR_s4 = ( 8, _REORDER_RGBA['BGAR'])
+	RGBA_BGAR_s8 = ( 4, _REORDER_RGBA['BGAR'])
 	
-	RGBA_BARG_s1 = (32, REORDER_RGBA['BARG'])
-	RGBA_BARG_s2 = (16, REORDER_RGBA['BARG'])
-	RGBA_BARG_s4 = ( 8, REORDER_RGBA['BARG'])
-	RGBA_BARG_s8 = ( 4, REORDER_RGBA['BARG'])
+	RGBA_BARG_s1 = (32, _REORDER_RGBA['BARG'])
+	RGBA_BARG_s2 = (16, _REORDER_RGBA['BARG'])
+	RGBA_BARG_s4 = ( 8, _REORDER_RGBA['BARG'])
+	RGBA_BARG_s8 = ( 4, _REORDER_RGBA['BARG'])
 	
-	RGBA_BAGR_s1 = (32, REORDER_RGBA['BAGR'])
-	RGBA_BAGR_s2 = (16, REORDER_RGBA['BAGR'])
-	RGBA_BAGR_s4 = ( 8, REORDER_RGBA['BAGR'])
-	RGBA_BAGR_s8 = ( 4, REORDER_RGBA['BAGR'])
+	RGBA_BAGR_s1 = (32, _REORDER_RGBA['BAGR'])
+	RGBA_BAGR_s2 = (16, _REORDER_RGBA['BAGR'])
+	RGBA_BAGR_s4 = ( 8, _REORDER_RGBA['BAGR'])
+	RGBA_BAGR_s8 = ( 4, _REORDER_RGBA['BAGR'])
 	
-	RGBA_ARGB_s1 = (32, REORDER_RGBA['ARGB'])
-	RGBA_ARGB_s2 = (16, REORDER_RGBA['ARGB'])
-	RGBA_ARGB_s4 = ( 8, REORDER_RGBA['ARGB'])
-	RGBA_ARGB_s8 = ( 4, REORDER_RGBA['ARGB'])
+	RGBA_ARGB_s1 = (32, _REORDER_RGBA['ARGB'])
+	RGBA_ARGB_s2 = (16, _REORDER_RGBA['ARGB'])
+	RGBA_ARGB_s4 = ( 8, _REORDER_RGBA['ARGB'])
+	RGBA_ARGB_s8 = ( 4, _REORDER_RGBA['ARGB'])
 	
-	RGBA_ARBG_s1 = (32, REORDER_RGBA['ARBG'])
-	RGBA_ARBG_s2 = (16, REORDER_RGBA['ARBG'])
-	RGBA_ARBG_s4 = ( 8, REORDER_RGBA['ARBG'])
-	RGBA_ARBG_s8 = ( 4, REORDER_RGBA['ARBG'])
+	RGBA_ARBG_s1 = (32, _REORDER_RGBA['ARBG'])
+	RGBA_ARBG_s2 = (16, _REORDER_RGBA['ARBG'])
+	RGBA_ARBG_s4 = ( 8, _REORDER_RGBA['ARBG'])
+	RGBA_ARBG_s8 = ( 4, _REORDER_RGBA['ARBG'])
 	
-	RGBA_AGRB_s1 = (32, REORDER_RGBA['AGRB'])
-	RGBA_AGRB_s2 = (16, REORDER_RGBA['AGRB'])
-	RGBA_AGRB_s4 = ( 8, REORDER_RGBA['AGRB'])
-	RGBA_AGRB_s8 = ( 4, REORDER_RGBA['AGRB'])
+	RGBA_AGRB_s1 = (32, _REORDER_RGBA['AGRB'])
+	RGBA_AGRB_s2 = (16, _REORDER_RGBA['AGRB'])
+	RGBA_AGRB_s4 = ( 8, _REORDER_RGBA['AGRB'])
+	RGBA_AGRB_s8 = ( 4, _REORDER_RGBA['AGRB'])
 	
-	RGBA_AGBR_s1 = (32, REORDER_RGBA['AGBR'])
-	RGBA_AGBR_s2 = (16, REORDER_RGBA['AGBR'])
-	RGBA_AGBR_s4 = ( 8, REORDER_RGBA['AGBR'])
-	RGBA_AGBR_s8 = ( 4, REORDER_RGBA['AGBR'])
+	RGBA_AGBR_s1 = (32, _REORDER_RGBA['AGBR'])
+	RGBA_AGBR_s2 = (16, _REORDER_RGBA['AGBR'])
+	RGBA_AGBR_s4 = ( 8, _REORDER_RGBA['AGBR'])
+	RGBA_AGBR_s8 = ( 4, _REORDER_RGBA['AGBR'])
 	
-	RGBA_ABRG_s1 = (32, REORDER_RGBA['ABRG'])
-	RGBA_ABRG_s2 = (16, REORDER_RGBA['ABRG'])
-	RGBA_ABRG_s4 = ( 8, REORDER_RGBA['ABRG'])
-	RGBA_ABRG_s8 = ( 4, REORDER_RGBA['ABRG'])
+	RGBA_ABRG_s1 = (32, _REORDER_RGBA['ABRG'])
+	RGBA_ABRG_s2 = (16, _REORDER_RGBA['ABRG'])
+	RGBA_ABRG_s4 = ( 8, _REORDER_RGBA['ABRG'])
+	RGBA_ABRG_s8 = ( 4, _REORDER_RGBA['ABRG'])
 	
-	RGBA_ABGR_s1 = (32, REORDER_RGBA['ABGR'])
-	RGBA_ABGR_s2 = (16, REORDER_RGBA['ABGR'])
-	RGBA_ABGR_s4 = ( 8, REORDER_RGBA['ABGR'])
-	RGBA_ABGR_s8 = ( 4, REORDER_RGBA['ABGR'])
+	RGBA_ABGR_s1 = (32, _REORDER_RGBA['ABGR'])
+	RGBA_ABGR_s2 = (16, _REORDER_RGBA['ABGR'])
+	RGBA_ABGR_s4 = ( 8, _REORDER_RGBA['ABGR'])
+	RGBA_ABGR_s8 = ( 4, _REORDER_RGBA['ABGR'])
 	
 	
 	def _get_reorder_function(format): return format.value[1]
@@ -1203,7 +1210,7 @@ class Polychrome(Polychromatic):
 		return n*8//format.value[0]
 	
 	def get_value(format, color, min_value, max_value):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		n = format._band_count()
 		
 		color = format.reorder_color(color)
@@ -1214,7 +1221,7 @@ class Polychrome(Polychromatic):
 		return Polychrome._scale_value_down( raw_value, min_value, max_value, len(format))
 		
 	def get_color(format, value, min_value, max_value):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		n = format._band_count()
 		
 		scaled_value = int(Polychrome._scale_value_up( value, min_value, max_value, len(format)))
@@ -1227,10 +1234,10 @@ class Polychrome(Polychromatic):
 
 '''Data Map Classes'''
 class DataMap:
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	ACCEPTED_IMAGE_FILE_TYPES = ('.png','.PNG')
 	def _data_from_kwargs(map,image=None,filename=None,size=None,**kwargs):
-		"""TODO DOC: 2"""
+		""".. todo::DOC_2"""
 		if image is not None:
 			map.data = image
 		elif filename is not None:
@@ -1256,7 +1263,7 @@ class DataMap:
 	def __delitem__(map, point):        raise NotImplementedError
 
 class ValueMap(DataMap):
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	
 	def __init__(map, 
 			min_value,max_value,
@@ -1264,7 +1271,7 @@ class ValueMap(DataMap):
 			access_format=RegionAccessFormat.LINEAR_HORIZONTAL,
 			access_manager=StaticAccessManager,
 			**data_kwargs):
-		"""TODO DOC: 2"""
+		""".. todo::DOC_2"""
 		
 		map.min_value=min_value
 		map.max_value=max_value
@@ -1292,7 +1299,7 @@ class ValueMap(DataMap):
 		map.access_manager.set_point(xy).putpixel(map.in_dimensions(xy),map.data_converter(value))
 	
 	def _data_from_kwargs(map,data=None,**data_kwargs):
-		"""TODO DOC: 2"""
+		""".. todo::DOC_2"""
 		if data is not None: 
 			raise NotImplementedError("The 'data' keyword is currently unsupported by the %s class."%(map.__class__)) 
 		
@@ -1302,27 +1309,27 @@ class ValueMap(DataMap):
 		map.width,map.height = map.size
 		
 	def get_access_format(map): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return map.access_manager.format
 	def set_access_format(map,access_format):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		map.access_manager.update(format=access_format)	
 	
 	def scale(map): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return map.data_format.get_scale(map.min_value,map.max_value)
 	def in_range(map, value): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return map.min_value <= value <= map.max_value
 	def in_dimensions(map,xy):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if 0 > xy[0] >= map.width: 
 			raise ValueError("'xy' value of %s is outside the allowed width dimensions of map"%(xy,))
 		elif 0 > xy[1] >= map.height: 
 			raise ValueError("'xy' value of %s is outside the allowed height dimensions of map"%(xy,))
 		else: return xy
 	def on_extrema(map,xy):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		value = map[xy]
 		if map.data_format.min(value, min_value=map.min_value, max_value=map.max_value): 
 			return -1
@@ -1332,7 +1339,7 @@ class ValueMap(DataMap):
 			return 0
 	
 	def convert(map, data_format, map_type=None, **kwargs):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		conversion_img = map.data.copy() 
 		
 		data_converter = data_format.converter(
@@ -1356,10 +1363,10 @@ class ValueMap(DataMap):
 				image=conversion_img
 			)
 	def draw_clear(map): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		map.draw_img = None
 	def draw(map, points, color=(255,255,255), clear=False): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if clear or not(hasattr(map,'draw_img')) or map.draw_img is None:
 			map.draw_img = map.data.copy()
 		
@@ -1369,7 +1376,7 @@ class ValueMap(DataMap):
 			pix[xy] = color
 		return map.draw_img
 	def show(map, data_format=None, draw=False): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if (data_format is not None and 
 			data_format is not map.data_format):
 			
@@ -1380,7 +1387,7 @@ class ValueMap(DataMap):
 			else: raise ValueError('%s does not have drawing available to show'%map.__class__)
 		else: map.data.show()
 	def save(map, filename, data_format=None): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if (data_format is not None and 
 			data_format is not map.data_format):
 			
@@ -1389,7 +1396,7 @@ class ValueMap(DataMap):
 		else: map.data.save(filename)
 
 class RegionValueMap(ValueMap):
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	MIN_WIDTH_DIVISIONS  = 8#16
 	MAX_WIDTH_DIVISIONS  = 128
 	MIN_HEIGHT_DIVISIONS = 8#16
@@ -1405,7 +1412,7 @@ class RegionValueMap(ValueMap):
 			access_format=RegionAccessFormat.LINEAR_HORIZONTAL,
 			access_manager=StaticAccessManager,
 			**data_kwargs):
-		"""TODO DOC: 2"""
+		""".. todo::DOC_2"""
 		# Sets 'data','size','width', and 'height' attributes
 		super().__init__(min_value,max_value,data_format,access_format=access_format,access_manager=access_manager,**data_kwargs)
 		map.access_manager.update(
@@ -1427,7 +1434,7 @@ class RegionValueMap(ValueMap):
 	def __setitem__(map, xy, value): map.access_manager.set_point(xy)[map.block_subpoint(xy)] = value
 	
 	def _data_from_kwargs(map, block_size=None, dirpath=None,**data_kwargs):
-		"""TODO DOC: 2"""
+		""".. todo::DOC_2"""
 		if block_size is not None:
 			map.block_size = block_size
 		else: map.block_size = None 
@@ -1547,19 +1554,19 @@ class RegionValueMap(ValueMap):
 		else: raise ValueError("Could not turn '%s' into box format"%(block,))
 	
 	def block_prefix(map): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return 'VMR'
 	def block_filename(map,block): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return '%s_%d_%d_%d_%d.png'%(map.block_prefix(), *map._boxed(block))
 	def block_filepath(map,block): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return os.path.join(map.dirpath, map.block_filename(block))
 	def block_subpoint(map, xy): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return tuple( d%map.block_size[i] for i,d in enumerate(xy))
 	def block_map(map, block): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return ValueMap(map.min_value, map.max_value, map.data_format, filename=map.block_filepath(block))
 	
 	def _combine_regions(map,full=True):
@@ -1573,7 +1580,7 @@ class RegionValueMap(ValueMap):
 	
 	def convert(map, data_format, map_type=None, **kwargs): raise NotImplementedError
 	def draw(map, points, color=(255,255,255), clear=False):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if clear or not(hasattr(map,'draw_img')) or map.draw_img is None:
 			map.draw_img = map._combine_regions(True)
 		
@@ -1583,7 +1590,7 @@ class RegionValueMap(ValueMap):
 			pix[xy] = color
 		return map.draw_img
 	def show(map, data_format=None, draw=False, full=True):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if (data_format is not None and 
 			data_format is not map.data_format):
 			raise NotImplementedError
@@ -1593,7 +1600,7 @@ class RegionValueMap(ValueMap):
 			else: raise ValueError('%s does not have drawing available to show'%map.__class__)
 		else: map._combine_regions(full=full).show()
 	def save(map, filename=None, data_format=None, dirpath=None, full=True): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if filename is not None and dirpath is None:
 			if (data_format is not None and 
 				data_format is not map.data_format):
@@ -1606,16 +1613,16 @@ class RegionValueMap(ValueMap):
 		else: raise ValueError('Single save location not given. Must provide a value for either the filename or dirpath keywords')
 	
 class DynamicRegionValueMap(RegionValueMap):
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	def __init__(map,
 			min_value,max_value,
 			data_format,
 			access_format=RegionAccessFormat.LINEAR_HORIZONTAL,
 			access_manager=DynamicAccessManager,
 			**data_kwargs):
-		"""TODO DOC: 2"""
+		""".. todo::DOC_2"""
 		super().__init__(min_value,max_value,data_format,access_format=access_format,access_manager=access_manager,**data_kwargs)
-		if DEBUG_VERBOSE: print('map.block_size = %s'%(map.block_size,))
+		if _DEBUG_VERBOSE: print('map.block_size = %s'%(map.block_size,))
 
 	
 
@@ -1630,9 +1637,9 @@ def _parse_data_image_filename(fn):
 def _get_data_image_filenames(pattern=None):
 	import re
 	valid_paths=[]
-	for filename in os.listdir(DEBUG_DATA_IMAGE_FOLDER):
+	for filename in os.listdir(_DEBUG_DATA_IMAGE_FOLDER):
 		if pattern is None or re.search(pattern,filename):
-			filepath = os.path.join(DEBUG_DATA_IMAGE_FOLDER,filename)
+			filepath = os.path.join(_DEBUG_DATA_IMAGE_FOLDER,filename)
 			if not os.path.isfile(filepath): raise ValueError('Failed')
 			valid_paths.append(filepath)
 	
@@ -1640,7 +1647,7 @@ def _get_data_image_filenames(pattern=None):
 
 
 '''Public Utility Function tests'''
-def test_stitching():
+def _test_stitching():
 	
 	files = _get_data_image_filenames(r'data_image_[\-\d]+_[\-\d]+.png')
 	vms = []
@@ -1674,7 +1681,7 @@ def test_stitching():
 	
 
 '''Data Map subclass tests'''
-def test_value_map_class():
+def _test_value_map_class():
 	print('====Running ValueMap Class Tests====',flush=True)
 	unwrapped_image = map_unwrap(
 		filepath='wrapped_test_0_500.png',
@@ -1691,7 +1698,7 @@ def test_value_map_class():
 		if y %120==0 and x%120 ==0:
 			sum += map[x,y]
 	
-def test_region_value_map_class():
+def _test_region_value_map_class():
 	print('====Running RegionValueMap Class Tests====',flush=True)
 	unwrapped_image = map_unwrap(
 		filepath='wrapped_test_0_500.png',
@@ -1710,7 +1717,7 @@ def test_region_value_map_class():
 		if y %120==0 and x%120 ==0:
 			sum += map[x,y]
 	
-def test_dynamic_region_value_map_class():
+def _test_dynamic_region_value_map_class():
 	print('====Running DynamicRegionValueMap Class Tests====',flush=True)
 	unwrapped_image = map_unwrap(
 		filepath='wrapped_test_0_500.png',
@@ -1730,7 +1737,7 @@ def test_dynamic_region_value_map_class():
 
 
 '''ColorValueFormat tests'''
-def test_ColorValueFormat(converter_func=False):
+def _test_ColorValueFormat(converter_func=False):
 	
 	def test_converter():
 		def compare_conversions(cA,cB):
@@ -2010,7 +2017,7 @@ def test_ColorValueFormat(converter_func=False):
 	if converter_func:
 		test_converter()
 '''TODO REFACTOR: Above and below functions to combine functionality or rename/reformat to be more descriptive of actual functionality'''
-def test_CVF(format,t=1,**kwargs):
+def _test_CVF(format,t=1,**kwargs):
 	print('Testing: %s'%format)
 	import random
 	def get_range_kwargs(min_value=None,max_value=None,**kwargs):
@@ -2187,15 +2194,15 @@ if __name__ == '__main__':
 	if True:
 		print('''Running Unit Tests for ColorValueFormat classes''',flush=True)
 		if False: # ColorValueFormat.converter function test
-			test_ColorValueFormat(converter_func=True)
+			_test_ColorValueFormat(converter_func=True)
 		if False: # ColorValueFormat Range Test
 			radius = 2**12
 			if False: #Monochrome
 				for format in Monochrome:
-					test_CVF( format, testing_radius=radius, verbose=0)
+					_test_CVF( format, testing_radius=radius, verbose=0)
 			if True: #Polychrome
 				for format in Polychrome:
-					test_CVF( format, testing_radius=radius, verbose=0)
+					_test_CVF( format, testing_radius=radius, verbose=0)
 		if False: # ColorValueFormat Palettes 
 			if False: #Monochrome
 				ColorValueFormat.all_palettes(
@@ -2221,11 +2228,11 @@ if __name__ == '__main__':
 	if False:
 		print('''Running Unit Tests for DataMap classes''',flush=True)
 		if False: #ValueMap class tests
-			test_value_map_class()
+			_test_value_map_class()
 		if True: #RegionValueMap class tests
-			test_region_value_map_class()
+			_test_region_value_map_class()
 		if False: #DynamicRegionValueMap class tests
-			test_dynamic_region_value_map_class()
+			_test_dynamic_region_value_map_class()
 	
 	
 	if True:
@@ -2237,4 +2244,4 @@ if __name__ == '__main__':
 			# TODO ADD: tests for map_unsplit
 			pass
 		if True: # map_stitch tests
-			test_stitching()
+			_test_stitching()

@@ -1,4 +1,4 @@
-"""Callable Sequence Reorderers
+"""Sequence Reordering
 
 This module contains tools which provides a simple API for the
 reordering of sequences based on predfined patterns.
@@ -7,12 +7,12 @@ reordering of sequences based on predfined patterns.
 
 '''Reorder Decorators'''
 def pack(func):
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	def packed_decorator(args,**kwargs): return func(*args,**kwargs)
 	return packed_decorator
 
 def unpack(func):
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	def unpacked_decorator(*args,**kwargs): return func(args,**kwargs)
 	return unpacked_decorator
 
@@ -28,11 +28,11 @@ class ReorderPackingError(ReorderError): pass
 
 '''Reorder Classes'''
 class Reorder:
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	FUNCTION_ARG_MIN = 2
 	FUNCTION_ARG_MAX = 10
 	def __init__(self, reorder, n=None, unpacked=None, unpack_sequence=None):
-		"""TODO DOC: 2"""
+		""".. todo::DOC_2"""
 		if callable(reorder) and not isinstance(reorder,Reorder):
 			n,unpacked = Reorder._reorder_args(reorder,n,unpacked)
 		else:
@@ -49,7 +49,7 @@ class Reorder:
 		self.reorder_function = pack(reorder) if unpacked else reorder
 	def __len__(self): return self._arg_length
 	def __call__(self, *sequence,**kwargs):
-		"""TODO DOC: 2"""
+		""".. todo::DOC_2"""
 		if self.unpack_sequence: 
 			return self.unpacked_reorder(*sequence,**kwargs)
 		else: return self.packed_reorder(*sequence,**kwargs)
@@ -61,22 +61,38 @@ class Reorder:
 		)
 		
 	def get_sequence_unpack(self): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return self.unpack_sequence
 	def set_sequence_unpack(self,unpacked): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		self.unpack_sequence =  unpacked
 	def unpacked_reorder(self, *sequence,**kwargs): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return self.packed_reorder(sequence,**kwargs)
 	def packed_reorder(self, sequence,**kwargs): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return self.reorder_function(sequence)
 	
+	@staticmethod
 	def get_index_reorder(indexes,unpacked=False):
-		"""TODO DOC: 1"""
+		"""Function builder which takes a sequence and return the elements reordered to match the original indexes provided as input.
+		
+		Args:
+			indexes (:obj:`list` of :obj:`int`): Index order the function rearranges inputs into.
+			unpacked (:obj:`bool`, optional): Flag which determines if returned function takes input as a packed or unpacked sequence. Defaults to False.
+			
+		Returns:
+			function: A reordering function which takes a sequence as
+			input and returns it in the order indicated by the
+			*indexes* parameter.
+			
+			The returned functions input can be either packed or unpacked
+			depending on the given *unpacked* flag.
+		"""
 		def index_reorder(args): return tuple(args[i] for i in indexes)
 		return unpack(index_reorder) if unpacked else index_reorder
+	
+	@staticmethod
 	def _reorder_args(reorder,n=None,unpacked=None):
 		if n is None:
 			for n in range(Reorder.FUNCTION_ARG_MIN,Reorder.FUNCTION_ARG_MAX if Reorder.FUNCTION_ARG_MAX is not None else Reorder.FUNCTION_ARG_MIN):
@@ -89,6 +105,8 @@ class Reorder:
 		else: return n,unpacked
 		
 		raise ReorderPackingError('Unable to determine how to pack arguments for reorder function')
+	
+	@staticmethod
 	def _is_reorder_unpacked(reorder,n,unpacked=None):
 		base_order = tuple(i for i in range(n))
 		
@@ -106,9 +124,9 @@ class Reorder:
 		else: return unpacked
 	
 class ReversibleReorder(Reorder):
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	def __init__(self,reorder,n=None,unpacked=None,unpack_sequence=None):
-		"""TODO DOC: 2"""
+		""".. todo::DOC_2"""
 		super().__init__(reorder,n=n,unpacked=unpacked,unpack_sequence=unpack_sequence)
 		
 		if isinstance(reorder,ReversibleReorder):
@@ -123,11 +141,24 @@ class ReversibleReorder(Reorder):
 	def __repr__(self): return super().__repr__().replace('->','<->')
 	
 	def packed_reorder(self, sequence, reverse=False,**kwargs):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return self.reverse_reorder_function(sequence) if reverse else super().packed_reorder(sequence,reverse=reverse,**kwargs)
-		
+	@staticmethod
 	def get_reversed(reorder,n=None,unpacked=None):
-		"""TODO DOC: 1"""
+		"""Function builder which takes a reordering function and
+		returns a new function that takes a sequence reordered by
+		the original and returns it in the original order.
+		
+		Args:
+			reorder (function): A function that reorders any
+				sequence given to it of appropiate length
+			n (:obj:`int`, optional): Sequence length accepted by the
+				given reorder function. Defaults to None.
+			unpacked (:obj:`bool`, optional): Flag which determines if
+				given function takes input as a packed or unpacked sequence.
+				Defaults to False.
+			
+		"""
 		def _rec_reversed_reorder_function(rec_func):
 			def reversed_reorder_unpacked(*args): return reorder(*rec_func(*args))
 			def reversed_reorder_packed(args): return reorder(rec_func(args))
@@ -163,7 +194,7 @@ class ReversibleReorder(Reorder):
 
 
 '''reorder.py Unit Tests'''
-def test_reorder(n):
+def _test_reorder(n):
 	import random
 	print('Testing Reorder and ReversibleReorder (arg length %d)'%n)
 	
@@ -347,4 +378,4 @@ def test_reorder(n):
 
 if __name__ == '__main__':
 	for n in range(Reorder.FUNCTION_ARG_MIN,Reorder.FUNCTION_ARG_MAX):
-		test_reorder(n)
+		_test_reorder(n)

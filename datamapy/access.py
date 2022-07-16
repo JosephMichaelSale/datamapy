@@ -1,4 +1,4 @@
-"""Dynamic Data Buffer Access Tools
+"""Dynamic Access Data Buffer
 
 This module includes several tools which generalize the process of
 loading large datasets into memory. Also includes abstractions of basic
@@ -14,7 +14,7 @@ from reorder import ReversibleReorder
 
 
 
-DEBUG_VERBOSE = False
+_DEBUG_VERBOSE = False
 """bool: Flag that enable verbose debug printing in certain functions"""
 
 
@@ -27,7 +27,7 @@ def _rec_multirange_iterator(iter_queue,yield_stack=[]):
 	else: yield tuple(yield_stack)	
 
 def multirange(dimension,reorder=None):
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	if reorder is not None:
 		if not isinstance(reorder,ReversibleReorder):
 			reorder = ReversibleReorder(reorder,n=len(dimension))
@@ -52,7 +52,7 @@ def _get_block_for_point(point,block_dimension):
 
 
 '''TODO REFACTOR: Find way to remove Format class. Provides unnecessary complications to expanding AccessFormat'''
-class Format(Enum):
+class _Format(Enum):
 	def _generate_next_value_(name, start, count, last_values):
 		value_list = []
 		feature = ''
@@ -71,46 +71,47 @@ class Format(Enum):
 			return last_values[-1]
 		return value_list
 
-class AccessFormat(Format):
-	"""TODO DOC: 0"""
+class AccessFormat(Enum):
+	""".. todo::DOC_0"""
 	def _generate_next_value_(name, start, count, last_values):
-		value = Format._generate_next_value_(name,start,count, last_values)
+		value = _Format._generate_next_value_(name,start,count, last_values)
 		if len(value) != 2: 
 			raise ValueError('Invalid size of AccessFormat member value', value)
 		else: return value
 	
 	def orientation(format): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return format.value[1]
 	def mode(format): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return format.value[0]
 	
 	def region(format,point,dimension,**access_kwargs): raise NotImplementedError
 	def access_iterator(format): raise NotImplementedError
 
 class RegionAccessFormat(AccessFormat):
-	"""TODO DOC: 0"""
-	LINEAR_VERTICAL = auto()
-	VERTICAL = auto()
-	LINEAR = auto()
+	""".. todo::DOC_0"""
+	
+	LINEAR_VERTICAL = ('LINEAR','VERTICAL')
+	VERTICAL = ('LINEAR','VERTICAL')
+	LINEAR = ('LINEAR','VERTICAL')
 	VERTICAL_LINEAR = ('LINEAR','VERTICAL')
 	
-	LINEAR_HORIZONTAL = auto()
-	HORIZONTAL = auto()
+	LINEAR_HORIZONTAL = ('LINEAR','HORIZONTAL')
+	HORIZONTAL = ('LINEAR','HORIZONTAL')
 	HORIZONTAL_LINEAR = ('LINEAR','HORIZONTAL')
 	
-	BLOCK_VERTICAL = auto()
-	BLOCK = auto()
+	BLOCK_VERTICAL = ('BLOCK','VERTICAL')
+	BLOCK = ('BLOCK','VERTICAL')
 	VERTICAL_BLOCK = ('BLOCK','VERTICAL')
 	
-	BLOCK_HORIZONTAL = auto()
+	BLOCK_HORIZONTAL = ('BLOCK','HORIZONTAL')
 	HORIZONTAL_BLOCK = ('BLOCK','HORIZONTAL')
 	
-	RANDOM_RANDOM = auto()
-	RANDOM = auto()
+	RANDOM_RANDOM = ('RANDOM','RANDOM')
+	RANDOM = ('RANDOM','RANDOM')
 	def region(format, point, dimension, block_dimension=None):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if (mode := format.mode()) == 'LINEAR':
 			if block_dimension is not None:
 				if (orientation := format.orientation()) == 'HORIZONTAL':
@@ -126,7 +127,7 @@ class RegionAccessFormat(AccessFormat):
 		elif mode == 'RANDOM': raise NotImplementedError
 		else:                  raise NotImplementedError
 	def access_iterator(format, dimension, block_dimension=None):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if (orientation:=format.orientation()) == 'HORIZONTAL':
 			reorder = [ i for i in reversed(range(len(dimension)))]
 		elif orientation == 'VERTICAL':
@@ -149,9 +150,9 @@ class RegionAccessFormat(AccessFormat):
 
 
 class AccessManager:
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	def __init__(manager,access_format,dimension,**access_kwargs):
-		"""TODO DOC: 2"""
+		""".. todo::DOC_2"""
 		# Format
 		if isinstance(access_format,AccessFormat):
 			manager.format = access_format
@@ -172,27 +173,27 @@ class AccessManager:
 		return point_info.setdefault('point_region', manager.format.region( point, manager.dimension, **manager.access_kwargs))
 	
 	def mode(manager):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return manager.format.mode()
 	def orientation(manager): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return manager.format.orientation()
 	
 	
 	'''Methods that can be implemented in subclasses'''
 	def update(manager,format=None,dimension=None,**kwargs):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if dimension is not None: manager.dimension = dimension
 		if format is not None:    manager.format = format
 		manager.access_kwargs.update(kwargs)
 	def get_point(manager,point,**point_info): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return manager.try_point(point,**point_info)
 	def set_point(manager,point,**point_info): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return manager.try_point(point,**point_info)
 	def del_point(manager,point,**point_info): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return manager.try_point(point,**point_info)
 	
 	'''Methods that must be implemented in subclasses'''
@@ -200,9 +201,9 @@ class AccessManager:
 	def has_point(manager,point,**point_info): raise NotImplementedError
 
 class StaticAccessManager(AccessManager):
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	def __init__(manager, access_format, dimension, block_dimension=None, fetch_function=None, **access_kwargs):
-		"""TODO DOC: 2"""
+		""".. todo::DOC_2"""
 		manager.block_dimension = block_dimension if block_dimension is not None else dimension
 		
 		manager.fetch_function = fetch_function
@@ -215,20 +216,20 @@ class StaticAccessManager(AccessManager):
 		return point_info.setdefault('point_block', _get_block_for_point( point, manager.block_dimension))
 	
 	def fetch(manager,block):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if manager.fetch_function is not None:
 			return manager.fetch_function(block)
 			
 		else: raise TypeError('AccessManager attempted to fetch block with no known fetch_function')
 	
 	def update(manager,fetch_function=None,**access_kwargs):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		if fetch_function is not None: manager.fetch_function = fetch_function
 		if 'block_dimension' in access_kwargs:
 			manager.block_dimension = access_kwargs['block_dimension']
 		super().update(**access_kwargs)
 	def try_point(manager,point,**point_info):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		point_region = manager._point_region(point,point_info)
 		point_block = manager._point_block(point,point_info)
 		
@@ -239,7 +240,7 @@ class StaticAccessManager(AccessManager):
 		
 		return manager.access_regions[point_region][point_block]
 	def has_point(manager,point,**point_info):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		point_region = manager._point_region(point,point_info)
 		point_block =  manager._point_block(point,point_info)
 		
@@ -250,11 +251,11 @@ class StaticAccessManager(AccessManager):
 		else: return False
 	
 class DynamicAccessManager(StaticAccessManager):
-	"""TODO DOC: 0"""
+	""".. todo::DOC_0"""
 	DEFAULT_BUFFER_SIZE = 1
 	
 	def __init__(manager,access_format,dimension,block_dimension=None,**access_kwargs):
-		"""TODO DOC: 2"""
+		""".. todo::DOC_2"""
 		super().__init__(access_format,dimension,block_dimension=block_dimension,**access_kwargs)
 		
 		manager.access_record = {}
@@ -275,22 +276,22 @@ class DynamicAccessManager(StaticAccessManager):
 		manager.access_record[point_region] += n
 	
 	def get_buffer_size(manager): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		return manager._buffer_size if hasattr(manager,'_buffer_size') else DynamicAccessManager.DEFAULT_BUFFER_SIZE
 	def set_buffer_size(manager, value): 
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		manager._buffer_size = value
 	
 	def try_point(manager,point,**point_info):
-		"""TODO DOC: 1"""
+		""".. todo::DOC_1"""
 		point_region = manager._point_region(point,point_info)
 		
 		if not(point_region in manager.access_regions):
 			if len(manager.access_regions) > manager.get_buffer_size():
 				removed = manager._remove_regions()
-				if DEBUG_VERBOSE: print('Deleted Region',removed,flush=True)
+				if _DEBUG_VERBOSE: print('Deleted Region',removed,flush=True)
 				
-			if DEBUG_VERBOSE: print('Get Region: %d'%point_region,flush=True)
+			if _DEBUG_VERBOSE: print('Get Region: %d'%point_region,flush=True)
 			manager._del_record()	
 		
 		manager._add_record(point_region)
