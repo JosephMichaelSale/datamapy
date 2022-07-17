@@ -21,4 +21,4 @@ Documentation Todo List
 
 License
 -------
-datamapy is licensed under the open source `MIT License <../../../LICENSE>`_
+datamapy is licensed under the open source `MIT License <https://github.com/JosephMichaelSale/datamapy/blob/main/LICENSE>`_
