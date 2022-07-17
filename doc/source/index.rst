@@ -11,6 +11,8 @@ Overview
 
 .. include:: overview.rst
 
+.. include:: quick_reference.rst
+
 .. toctree::
    :maxdepth: 4
    :caption: Table of Contents
